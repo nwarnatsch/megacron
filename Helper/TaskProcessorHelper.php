@@ -26,7 +26,7 @@ class TaskProcessorHelper
      * @param TaskConfiguration $taskConfig
      * @param string $phpBinaryPath
      */
-    public function __construct(string $binDirPath, Command $command, TaskConfiguration $taskConfig, string $phpBinaryPath = '')
+    public function __construct(string $binDirPath, Command $command, TaskConfiguration $taskConfig, string $phpBinaryPath)
     {
         $this->binDirPath = $binDirPath;
         $this->command = $command;
