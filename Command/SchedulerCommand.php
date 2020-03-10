@@ -15,10 +15,14 @@ class SchedulerCommand extends Command
     /** @var string */
     private $projectDir;
 
-    public function __construct(string $projectDir)
+    /** @var string */
+    private string $phpBinaryPath;
+
+    public function __construct(string $projectDir, string $phpBinaryPath = '')
     {
         parent::__construct();
         $this->projectDir = $projectDir;
+        $this->phpBinaryPath = $phpBinaryPath;
     }
 
     protected function configure(): void
@@ -27,8 +31,7 @@ class SchedulerCommand extends Command
             ->setName('comparon:scheduler:run')
             ->setDescription('...')
             ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     /**
@@ -42,7 +45,7 @@ class SchedulerCommand extends Command
             if ($command instanceof TaskInterface) {
                 $configs = $command->getTaskConfigurations();
                 foreach ($configs as $config) {
-                    (new TaskProcessorHelper($this->getBinDirPath(), $command, $config))->process();
+                    (new TaskProcessorHelper($this->getBinDirPath(), $command, $config, $this->phpBinaryPath))->process();
                 }
             }
         }
@@ -51,8 +54,7 @@ class SchedulerCommand extends Command
     private function getBinDirPath(): string
     {
         return $this->projectDir
-            . DIRECTORY_SEPARATOR  . 'bin'
-            . DIRECTORY_SEPARATOR
-        ;
+            . DIRECTORY_SEPARATOR . 'bin'
+            . DIRECTORY_SEPARATOR;
     }
 }
